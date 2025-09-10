@@ -12,7 +12,7 @@
 
 #include "inc/philosophers.h"
 
-void	init_struct(t_struct *dinner, pthread_t *philos, pthread_mutex_t *forks, char **argv)
+void	init_struct_dinner(t_struct *dinner, pthread_t *philos, pthread_mutex_t *forks, char **argv)
 {
 	int	i;
 	int	number_of_philos;
@@ -41,6 +41,36 @@ void	init_struct(t_struct *dinner, pthread_t *philos, pthread_mutex_t *forks, ch
 	}
 }
 
+
+void	init_struct_server(t_struct *dinner, t_monitor *server)
+{
+	int	i;
+
+	i = 0;
+	server->death = false;
+	while (i < dinner[0].number_of_philos)
+	{
+		dinner[i].death = &server->death;
+		i++;
+	}
+}
+
+void	init_mutexes(pthread_mutex_t *forks, t_struct *dinner, t_monitor *server)
+{
+	int	i;
+
+	create_forks(forks, dinner);
+	pthread_mutex_init(&server->print_mutex, NULL);
+	pthread_mutex_init(&server->death_mutex, NULL);
+	i = 0;
+	while (i < dinner[0].number_of_philos)
+	{
+		dinner[i].print_mutex = &server->print_mutex;
+		dinner[i].death_mutex = &server->death_mutex;
+		i++;
+	}
+}
+
 void	create_forks(pthread_mutex_t *forks, t_struct *dinner)
 {
 	int	i;
@@ -49,19 +79,6 @@ void	create_forks(pthread_mutex_t *forks, t_struct *dinner)
 	while (i < dinner[0].number_of_philos)
 	{
 		pthread_mutex_init(&forks[i], NULL);
-		i++;
-	}
-}
-
-void	create_print_mutex(pthread_mutex_t *print_mutex, t_struct *dinner)
-{
-	int	i;
-
-	pthread_mutex_init(print_mutex, NULL);
-	i = 0;
-	while (i < dinner[0].number_of_philos)
-	{
-		dinner[i].print_mutex = print_mutex;
 		i++;
 	}
 }

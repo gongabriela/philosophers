@@ -18,16 +18,13 @@ int	main(int argc, char **argv)
 	t_monitor		server;
 	pthread_t		philos[MAX];
 	pthread_mutex_t	forks[MAX];
-	//pthread_mutex_t	death_flag_mutex;
 
 	if (parse_args(argc, argv) == 1)
 		return (printf("Error: invalid arguments\n"), 1);
-	init_struct(dinner, philos, forks, argv);
-	create_forks(forks, dinner);
-	create_print_mutex(&server.print_mutex, dinner);
-	//create_death_flag_mutex(&server);
+	init_struct_dinner(dinner, philos, forks, argv);
+	init_struct_server(dinner, &server);
+	init_mutexes(forks, dinner, &server);
 	begin_dinner(philos, dinner, &server);
-	//init_server(&server);
 	ft_free_and_destroy(NULL, philos, forks, dinner, &server);
 	return (0);
 }

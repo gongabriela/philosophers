@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <limits.h>
 # include <sys/time.h>
+# include <stdbool.h>
 #  define MAX 200
 //--------------------------main struct---------------------------------------
 
@@ -32,7 +33,7 @@ typedef struct s_struct
 	pthread_t		*philos_array; //not sure if we need that here
 	pthread_mutex_t *forks_array; //not sure if we need that here
 
-//	bool			*death_flag;
+	bool			*death;
 
 	struct timeval	start_time;
 	struct timeval	current_time;
@@ -44,7 +45,7 @@ typedef struct s_struct
 	pthread_mutex_t *right_fork;
 
 	pthread_mutex_t	*print_mutex;
-	//pthread_mutex_t	*death_flag_mutex;
+	pthread_mutex_t	*death_mutex;
 	//pthread_mutex_t	*last_meal_mutex;
 
 } t_struct;
@@ -53,8 +54,8 @@ typedef struct s_monitor
 {
 	pthread_t		server;
 	t_struct		*dinner;
-	//bool			death_flag;
-	//pthread_mutex_t	death_flag_mutex;
+	bool			death;
+	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	print_mutex;
 	//pthread_mutex_t last_meal_mutex;
 } t_monitor;
@@ -70,12 +71,13 @@ int			ft_atoi(const char *str);
 
 //-----------------------init struct-----------------------------------------
 
-void	init_struct(t_struct *dinner, pthread_t *philos, pthread_mutex_t *forks, char **argv);
+void	init_struct_dinner(t_struct *dinner, pthread_t *philos, pthread_mutex_t *forks, char **argv);
+void	init_struct_server(t_struct *dinner, t_monitor *server);
+void	init_mutexes(pthread_mutex_t *forks, t_struct *dinner, t_monitor *server);
 void	create_forks(pthread_mutex_t *forks, t_struct *dinner);
 void	begin_dinner(pthread_t *philos, t_struct *dinner, t_monitor *server);
 void	*routine(void *arg);
 void	ft_free_and_destroy(char *error_msg, pthread_t *philos, pthread_mutex_t *forks, t_struct *dinner, t_monitor *server);
-void	create_print_mutex(pthread_mutex_t *print_mutex, t_struct *dinner);
 
 // ------------------ actions ---------------------------------------------
 
@@ -90,12 +92,7 @@ void	get_timestamp(t_struct *dinner);
 void	get_current_time(t_struct *dinner);
 void	get_start_time(t_struct *dinner);
 
-//--------------------death check ---------------------------------------
-
-void	create_death_flag_mutex(pthread_mutex_t *death_flag, t_monitor *dinner, t_monitor *server);
-
 // --------------------server-------------------------------------------
 
-void	init_server(t_struct *dinner, t_monitor *server);
 void	*server_routine(void *arg);
 #endif

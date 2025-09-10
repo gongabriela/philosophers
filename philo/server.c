@@ -12,17 +12,7 @@
 
 #include "inc/philosophers.h"
 
-/*void	init_server(t_struct *dinner, t_monitor *server)
-{
-    server->dinner = dinner;
-    server->death_flag = dinner[0].death_flag; // int *death_flag
-    server->death_flag_mutex = dinner[0].death_flag_mutex; // pthread_mutex_t *
-    server->print_mutex = dinner[0].print_mutex; // pthread_mutex_t *
-    if (pthread_create(server->server, NULL, &server_routine, server))
-        ft_free_destroy("monitor thread creation failed", dinner[0].philos_array, dinner[0].forks_array, dinner);
-}
-
-void	*server_routine(void *arg)
+/*void	*server_routine(void *arg)
 {
     t_monitor	*server = (t_monitor *)arg;
     int			i;
