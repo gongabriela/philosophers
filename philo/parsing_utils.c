@@ -23,7 +23,6 @@ int	ft_isdigit(int c)
 ** Returns 1 if any argv is not all digits, 0 otherwise.
 ** Assumes argv[0] is the program name and checks from argv[1].
 */
-
 int	ft_is_all_digit(char **argv)
 {
 	int	i;

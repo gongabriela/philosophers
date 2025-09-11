@@ -18,18 +18,16 @@ void	ft_free_and_destroy(char *error_msg, pthread_t *philos, pthread_mutex_t *fo
 	int	i;
 
 	i = 0;
+	(void)philos;
 	if (error_msg)
 		printf("%s\n", error_msg);
-	while(i < dinner[0].number_of_philos)
-	{
-		pthread_join(philos[i], NULL);
-		i++;
-	}
 	i = 0;
 	while (i < dinner[0].number_of_philos)
 	{
 		pthread_mutex_destroy(&forks[i]);
+		pthread_mutex_destroy(&dinner[i].last_meal_mutex);
 		i++;
 	}
 	pthread_mutex_destroy(&server->print_mutex);
+	pthread_mutex_destroy(&server->death_mutex);
 }

@@ -12,7 +12,7 @@
 
 #include "inc/philosophers.h"
 
-void	get_start_time(t_struct *dinner)
+void	get_start_time(t_struct *dinner, t_monitor *server)
 {
 	struct timeval	start_time;
 	int	i;
@@ -24,6 +24,7 @@ void	get_start_time(t_struct *dinner)
 		dinner[i].start_time = start_time;
 		i++;
 	}
+	server->start_time = start_time;
 }
 
 void	get_current_time(t_struct *dinner)

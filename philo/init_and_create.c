@@ -14,8 +14,8 @@
 
 void	init_struct_dinner(t_struct *dinner, pthread_t *philos, pthread_mutex_t *forks, char **argv)
 {
-	int	i;
-	int	number_of_philos;
+	int		i;
+	int		number_of_philos;
 
 	i = 0;
 	number_of_philos = ft_atoi(argv[1]);
@@ -37,10 +37,10 @@ void	init_struct_dinner(t_struct *dinner, pthread_t *philos, pthread_mutex_t *fo
 		else
 			dinner[i].left_fork = &forks[i - 1];
 		dinner[i].right_fork = &forks[i];
+		dinner[i].last_meal = 0;
 		i++;
 	}
 }
-
 
 void	init_struct_server(t_struct *dinner, t_monitor *server)
 {
@@ -67,6 +67,7 @@ void	init_mutexes(pthread_mutex_t *forks, t_struct *dinner, t_monitor *server)
 	{
 		dinner[i].print_mutex = &server->print_mutex;
 		dinner[i].death_mutex = &server->death_mutex;
+		pthread_mutex_init(&dinner[i].last_meal_mutex, NULL);
 		i++;
 	}
 }
@@ -88,11 +89,20 @@ void	begin_dinner(pthread_t *philos, t_struct *dinner, t_monitor *server)
 	int	i;
 
 	i = 0;
-	get_start_time(dinner);
+	get_start_time(dinner, server);
 	while (i < dinner[0].number_of_philos)
 	{
 		if (pthread_create(&philos[i], NULL, routine, &dinner[i]))
 			ft_free_and_destroy("thread creation failed", philos, dinner[i].forks_array, dinner, server);
 		i++;
 	}
+	if (pthread_create(&server->server, NULL, server_routine, &server))
+		ft_free_and_destroy("thread creation failed", philos, dinner[i].forks_array, dinner, server);
+	i = 0;
+	while(i < dinner[0].number_of_philos)
+	{
+		pthread_join(philos[i], NULL);
+		i++;
+	}
+	pthread_join(server->server, NULL);
 }

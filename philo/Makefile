@@ -15,7 +15,7 @@ NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = philosophers.c parsing.c parsing_utils.c init_and_create.c routine.c time.c free.c
+SRC = philosophers.c parsing.c parsing_utils.c init_and_create.c routine.c routine_utils.c server.c time.c free.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

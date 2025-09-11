@@ -46,7 +46,9 @@ typedef struct s_struct
 
 	pthread_mutex_t	*print_mutex;
 	pthread_mutex_t	*death_mutex;
-	//pthread_mutex_t	*last_meal_mutex;
+
+	pthread_mutex_t	last_meal_mutex;
+	long			last_meal;
 
 } t_struct;
 
@@ -57,7 +59,11 @@ typedef struct s_monitor
 	bool			death;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	print_mutex;
-	//pthread_mutex_t last_meal_mutex;
+	//pthread_mutex_t *last_meal_mutex;
+	//long			*last_meal;
+	long			timestamp;
+	struct timeval	start_time;
+	struct timeval	current_time;
 } t_monitor;
 
 //-----------------------------parsing----------------------------------------
@@ -90,9 +96,21 @@ void	grab_forks(t_struct *dinner);
 
 void	get_timestamp(t_struct *dinner);
 void	get_current_time(t_struct *dinner);
-void	get_start_time(t_struct *dinner);
+void	get_start_time(t_struct *dinner, t_monitor *server);
 
 // --------------------server-------------------------------------------
 
 void	*server_routine(void *arg);
+bool	get_death_info(t_monitor *server);
+void	change_death(t_monitor *server);
+long	get_timestamp_server(t_monitor *server);
+int		check_if_philo_has_died(t_monitor *server, t_struct *dinner);
+
+// -------------------------dinner -------------------------------------
+
+bool	get_death_info_dinner(t_struct *dinner);
+void	update_last_meal(t_struct *dinner);
+void	get_start_time_in_ms(t_struct *dinner);
+
+
 #endif
