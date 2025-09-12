@@ -48,6 +48,7 @@ void	init_struct_server(t_struct *dinner, t_monitor *server)
 
 	i = 0;
 	server->death = false;
+	server->dinner = dinner;
 	while (i < dinner[0].number_of_philos)
 	{
 		dinner[i].death = &server->death;
@@ -90,14 +91,14 @@ void	begin_dinner(pthread_t *philos, t_struct *dinner, t_monitor *server)
 
 	i = 0;
 	get_start_time(dinner, server);
+	if (pthread_create(&server->server, NULL, server_routine, server))
+		ft_free_and_destroy("thread creation failed", philos, dinner[i].forks_array, dinner, server);
 	while (i < dinner[0].number_of_philos)
 	{
 		if (pthread_create(&philos[i], NULL, routine, &dinner[i]))
 			ft_free_and_destroy("thread creation failed", philos, dinner[i].forks_array, dinner, server);
 		i++;
 	}
-	if (pthread_create(&server->server, NULL, server_routine, &server))
-		ft_free_and_destroy("thread creation failed", philos, dinner[i].forks_array, dinner, server);
 	i = 0;
 	while(i < dinner[0].number_of_philos)
 	{

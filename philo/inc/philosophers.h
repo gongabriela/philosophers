@@ -111,6 +111,6 @@ int		check_if_philo_has_died(t_monitor *server, t_struct *dinner);
 bool	get_death_info_dinner(t_struct *dinner);
 void	update_last_meal(t_struct *dinner);
 void	get_start_time_in_ms(t_struct *dinner);
-
+void	exec_single_philo(t_struct *dinner);
 
 #endif

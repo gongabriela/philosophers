@@ -22,9 +22,18 @@ void	get_start_time(t_struct *dinner, t_monitor *server)
 	while (i < dinner[0].number_of_philos)
 	{
 		dinner[i].start_time = start_time;
+		dinner[i].last_meal = 0;
 		i++;
 	}
 	server->start_time = start_time;
+}
+
+void	get_start_time_in_ms(t_struct *dinner)
+{
+	long	start_time_ms;
+
+	start_time_ms = dinner->start_time.tv_sec * 1000 + dinner->start_time.tv_usec / 1000;
+	dinner->last_meal = start_time_ms;
 }
 
 void	get_current_time(t_struct *dinner)

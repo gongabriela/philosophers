@@ -17,7 +17,12 @@ void	*routine(void *arg)
 	t_struct	*dinner;
 
 	dinner = (t_struct *)arg;
-	get_start_time_in_ms(dinner);
+	//get_start_time_in_ms(dinner);
+	if (dinner->number_of_philos == 1)
+	{
+		exec_single_philo(dinner);
+		return (NULL);
+	}
 	if (dinner->philo_id % 2 == 0)
 		think(dinner, dinner->time_to_eat);
 	while (1)
@@ -34,12 +39,20 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-void	get_start_time_in_ms(t_struct *dinner)
+void	exec_single_philo(t_struct *dinner)
 {
-	long	start_time_ms;
-
-	start_time_ms = dinner->start_time.tv_sec * 1000 + dinner->start_time.tv_usec / 1000;
-	dinner->last_meal = start_time_ms;
+	pthread_mutex_t *fork;
+	if (dinner->left_fork)
+		fork = dinner->left_fork;
+	else
+		fork = dinner->right_fork;
+	pthread_mutex_lock(fork);
+	pthread_mutex_lock(dinner->print_mutex);
+	get_timestamp(dinner);
+	printf("%ld %d has taken a fork\n", dinner->timestamp, dinner->philo_id);
+	pthread_mutex_unlock(dinner->print_mutex);
+	usleep(dinner->time_to_die * 1000);
+	pthread_mutex_unlock(fork);
 }
 
 void	think(t_struct *dinner, int	ms)
@@ -70,6 +83,12 @@ void	grab_forks(t_struct *dinner)
 
 	get_timestamp(dinner);
 	pthread_mutex_lock(dinner->print_mutex);
+	if (get_death_info_dinner(dinner) == true)
+	{
+		pthread_mutex_unlock(dinner->print_mutex);
+		pthread_mutex_unlock(fork_1);
+		return ;
+	}
 	printf("%ld %d has taken a fork\n", dinner->timestamp, dinner->philo_id);
 	pthread_mutex_unlock(dinner->print_mutex);
 
@@ -90,7 +109,6 @@ void	eat(t_struct *dinner, int ms)
 {
 	if (get_death_info_dinner(dinner) == true)
 	{
-		pthread_mutex_unlock(dinner->print_mutex);
 		pthread_mutex_unlock(dinner->left_fork);
 		pthread_mutex_unlock(dinner->right_fork);
 		return ;

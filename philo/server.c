@@ -22,7 +22,9 @@ void	*server_routine(void *arg)
 	{
 		death_copy = get_death_info(server); //abrir o death com mutex, pegar info, deslockar death
 		if (death_copy == true)
+		{
 			break ;
+		}
 		i = 0;
 		while (i < server->dinner[0].number_of_philos)
 		{
@@ -32,6 +34,11 @@ void	*server_routine(void *arg)
 				pthread_mutex_lock(&server->print_mutex);
 				printf("%ld %d has died\n", get_timestamp_server(server), i + 1); //printar msg de morte
 				pthread_mutex_unlock(&server->print_mutex);
+				return (NULL);
+			}
+			if (ate_all(server, &server->dinner[i]))
+			{
+				change_death(server);
 				return (NULL);
 			}
 			i++;
