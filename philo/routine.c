@@ -31,12 +31,29 @@ void	*routine(void *arg)
 			break ;
 		grab_forks(dinner);
 		eat(dinner, dinner->time_to_eat);
+		if (meals_eaten_check(dinner))
+			return (NULL);
 		ft_sleep(dinner, dinner->time_to_sleep);
 		if (get_death_info_dinner(dinner) == true)
 			break ;
 		think(dinner, dinner->time_to_eat);
 	}
 	return (NULL);
+}
+
+int	meals_eaten_check(t_struct *dinner)
+{
+	if (dinner->must_eat == -1)
+		return (0);
+	dinner->meals_eaten++;
+	if (dinner->must_eat == dinner->meals_eaten)
+	{
+		pthread_mutex_lock(&dinner->finished_mutex);
+		dinner->finished = 1;
+		pthread_mutex_unlock(&dinner->finished_mutex);
+		return (1);
+	}
+	return (0);
 }
 
 void	exec_single_philo(t_struct *dinner)

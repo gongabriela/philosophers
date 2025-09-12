@@ -50,6 +50,12 @@ typedef struct s_struct
 	pthread_mutex_t	last_meal_mutex;
 	long			last_meal;
 
+	int				meals_eaten;
+	int				finished;
+	int				counted;
+	pthread_mutex_t meals_eaten_mutex;
+	pthread_mutex_t finished_mutex;
+
 } t_struct;
 
 typedef struct s_monitor
@@ -105,12 +111,13 @@ bool	get_death_info(t_monitor *server);
 void	change_death(t_monitor *server);
 long	get_timestamp_server(t_monitor *server);
 int		check_if_philo_has_died(t_monitor *server, t_struct *dinner);
-
+int		ate_all(t_struct *dinner);
 // -------------------------dinner -------------------------------------
 
 bool	get_death_info_dinner(t_struct *dinner);
 void	update_last_meal(t_struct *dinner);
 void	get_start_time_in_ms(t_struct *dinner);
 void	exec_single_philo(t_struct *dinner);
+int		meals_eaten_check(t_struct *dinner);
 
 #endif

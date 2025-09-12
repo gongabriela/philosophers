@@ -38,6 +38,9 @@ void	init_struct_dinner(t_struct *dinner, pthread_t *philos, pthread_mutex_t *fo
 			dinner[i].left_fork = &forks[i - 1];
 		dinner[i].right_fork = &forks[i];
 		dinner[i].last_meal = 0;
+		dinner[i].meals_eaten = 0;
+		dinner[i].finished = 0;
+		dinner[i].counted = 0;
 		i++;
 	}
 }
@@ -69,6 +72,11 @@ void	init_mutexes(pthread_mutex_t *forks, t_struct *dinner, t_monitor *server)
 		dinner[i].print_mutex = &server->print_mutex;
 		dinner[i].death_mutex = &server->death_mutex;
 		pthread_mutex_init(&dinner[i].last_meal_mutex, NULL);
+		if (dinner[i].must_eat != -1)
+		{
+			pthread_mutex_init(&dinner[i].meals_eaten_mutex, NULL);
+			pthread_mutex_init(&dinner[i].finished_mutex, NULL);
+		}
 		i++;
 	}
 }
@@ -97,6 +105,7 @@ void	begin_dinner(pthread_t *philos, t_struct *dinner, t_monitor *server)
 	{
 		if (pthread_create(&philos[i], NULL, routine, &dinner[i]))
 			ft_free_and_destroy("thread creation failed", philos, dinner[i].forks_array, dinner, server);
+		usleep(100);
 		i++;
 	}
 	i = 0;

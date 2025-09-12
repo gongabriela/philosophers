@@ -26,6 +26,11 @@ void	ft_free_and_destroy(char *error_msg, pthread_t *philos, pthread_mutex_t *fo
 	{
 		pthread_mutex_destroy(&forks[i]);
 		pthread_mutex_destroy(&dinner[i].last_meal_mutex);
+		if (dinner[i].must_eat != -1)
+		{
+			pthread_mutex_destroy(&dinner[i].meals_eaten_mutex);
+			pthread_mutex_destroy(&dinner[i].finished_mutex);
+		}
 		i++;
 	}
 	pthread_mutex_destroy(&server->print_mutex);
