@@ -36,7 +36,7 @@ void	*routine(void *arg)
 		ft_sleep(dinner, dinner->time_to_sleep);
 		if (get_death_info_dinner(dinner) == true)
 			break ;
-		think(dinner, dinner->time_to_eat);
+		think(dinner, 6);
 	}
 	return (NULL);
 }

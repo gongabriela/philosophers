@@ -70,6 +70,7 @@ typedef struct s_monitor
 	long			timestamp;
 	struct timeval	start_time;
 	struct timeval	current_time;
+    pthread_mutex_t waiter_mutex;
 } t_monitor;
 
 //-----------------------------parsing----------------------------------------
