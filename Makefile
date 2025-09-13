@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/04/15 12:13:28 by ggoncalv          #+#    #+#              #
-#    Updated: 2025/04/15 12:13:28 by ggoncalv         ###   ########.fr        #
+#    Created: 2025/09/13 11:01:05 by ggoncalv          #+#    #+#              #
+#    Updated: 2025/09/13 11:01:05 by ggoncalv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = philosophers.c parsing.c parsing_utils.c init_and_create.c routine.c routine_utils.c server.c time.c free.c
+SRC = main.c parsing.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
