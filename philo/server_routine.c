@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 11:39:16 by ggoncalv          #+#    #+#             */
-/*   Updated: 2025/09/15 18:46:39 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2025/09/15 19:13:14 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	*server_routine(void *arg)
 	return (arg);
 }
 
-//verifica se morreu
 int	check_death_all(t_philos *philo)
 {
 	int	i;
@@ -43,7 +42,7 @@ int	check_death_all(t_philos *philo)
 			pthread_mutex_unlock(&philo[i].eating_mutex);
 			pthread_mutex_unlock(&philo[i].last_meal_mutex);
 			pthread_mutex_lock(philo->print_mutex);
-			printf("%ld %d has died\n", get_current_time()
+			printf("%ld %d died\n", get_current_time()
 				- philo->start_time, philo[i].id);
 			pthread_mutex_unlock(philo->print_mutex);
 			pthread_mutex_lock(philo[i].died_mutex);
@@ -82,11 +81,3 @@ int	finished_eating(t_philos *philo)
 	}
 	return (0);
 }
-
-//verifica se morreu de fome
-	//se (current_time - last_meal) >= time_to_die && is_eating == false
-		//return true
-	//return false
-
-//verifica se terminaram de comer
-	//faz igual vc

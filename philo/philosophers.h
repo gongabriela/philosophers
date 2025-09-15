@@ -110,7 +110,6 @@ bool	check_death(t_philos *philo);
 
 int		grab_forks(t_philos *philo);
 int		eat(t_philos *philo);
-void	release_forks(t_philos *philo);
 void	ft_sleep(t_philos *philo);
 void	think(t_philos *philo);
 void	table_for_one(t_philos *philo);
